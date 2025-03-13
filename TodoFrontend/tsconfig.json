@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "types": [
+      "element-plus/global"  // 添加这行声明[3,4](@ref)
+    ]
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}
