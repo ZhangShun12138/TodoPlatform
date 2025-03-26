@@ -19,6 +19,9 @@ RUN npm run build
 # 使用Nginx作为生产环境
 FROM nginx:1.25.3-alpine as production-stage
 
+# 复制Nginx配置文件
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # 复制构建好的文件到Nginx目录
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
