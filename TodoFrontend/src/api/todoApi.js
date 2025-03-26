@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://localhost:7129', // 添加/api前缀
+  baseURL: 'http://localhost:5227', // 添加/api前缀
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('token')}`
   }
