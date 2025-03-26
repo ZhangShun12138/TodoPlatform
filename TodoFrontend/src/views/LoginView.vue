@@ -80,6 +80,7 @@ const handleLogin = async () => {
     const res = await userlogin(form.username, form.password);
     if (res.success) {
       localStorage.setItem('token', res.token); // 存储 Token
+      localStorage.setItem('username', form.username);
       ElMessage.success('登录成功');
       router.push('/home');
     }
