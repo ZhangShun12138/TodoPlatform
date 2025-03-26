@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoBackend.Interfaces;
 using TodoBackend.Requests;
+using TodoBackend.tools;
 
 namespace TodoBackend.Controllers;
 
@@ -9,17 +10,20 @@ namespace TodoBackend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly IUserService _UserService;
+    private readonly IUserService _userService;
+    private readonly JwtHelper _jwtHelper;
+    private readonly JwtTokenSettings _jwtSettings;
 
     public UserController(
-        ILogger<UserController> logger,
-        IUserService UserService)
+    ILogger<UserController> logger,
+    IUserService userService,
+    JwtHelper jwtHelper,
+    JwtTokenSettings jwtSettings)
     {
-        ArgumentNullException.ThrowIfNull(logger);
-        ArgumentNullException.ThrowIfNull(UserService);
-
         _logger = logger;
-        _UserService = UserService;
+        _userService = userService;
+        _jwtHelper = jwtHelper;
+        _jwtSettings = jwtSettings;
     }
 
     [HttpPost("send-code")]
@@ -28,7 +32,7 @@ public class UserController : ControllerBase
         // 3. 发送邮件
         try
         {
-            await _UserService.SendVerificationCodeAsync(request.Email);
+            await _userService.SendVerificationCodeAsync(request.Email);
             return Ok(new { Success = true });
         }
         catch (Exception)
@@ -43,7 +47,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var result = await _UserService.UserRegisterAsync(request.Email, request.Captcha, request.Password);
+            var result = await _userService.UserRegisterAsync(request.Email, request.Captcha, request.Password);
             return Ok(new { Success = true, Result = result });
         }
         catch (Exception)
@@ -56,16 +60,31 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> UserLogin([FromBody] UserLoginRequest request)
     {
-        // 3. 发送邮件
         try
         {
-            // var result = await _UserService.UserRegisterAsync(request.Email, request.Captcha, request.Password);
-            return Ok(new { Success = true });
+            // 1. 验证用户（假设你有一个 UserService 来处理用户验证）
+            var user = await _userService.AuthenticateUserAsync(request.Email, request.Password);
+            if (user == null)
+            {
+                return Unauthorized(new { Error = "用户名或密码错误" });
+            }
+
+            // 2. 生成 JWT Token
+            var token = _jwtHelper.GenerateToken(user.Username);
+
+            // 3. 返回 Token 和成功信息
+            return Ok(new
+            {
+                Success = true,
+                Token = token,
+                ExpiresIn = _jwtSettings.TokenExpires * 3600 // 过期时间（秒）
+            });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // 记录日志
-            return StatusCode(500, new { Error = "注册失败" });
+            _logger.LogError(ex, "登录失败");
+            return StatusCode(500, new { Error = "登录失败，请稍后重试" });
         }
     }
 }

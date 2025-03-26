@@ -103,4 +103,26 @@ public class UserService : IUserService
         }
         return await Task.FromResult("注册成功");
     }
+
+    public async Task<User?> AuthenticateUserAsync(string email, string password)
+    {
+        var user = await _context.Users.Where(u => u.Username == email)
+            .FirstOrDefaultAsync();
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        var passwordHash = ToolClass.HashPassword(password, user.PasswordSalt);
+
+        if (passwordHash.SequenceEqual(user.PasswordHash))
+        {
+            return user;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

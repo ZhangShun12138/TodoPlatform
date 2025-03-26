@@ -72,17 +72,17 @@ const rules = {
 
 // 登录逻辑
 const router = useRouter();
-const loading = ref(false);
+const loading = ref(false); // 添加 loading 变量
 
 const handleLogin = async () => {
   loading.value = true;
   try {
-    // 此处调用登录接口（需自行实现）
-    const res = await userlogin(form.username,form.password);
-    // if (res.success) {
+    const res = await userlogin(form.username, form.password);
+    if (res.success) {
+      localStorage.setItem('token', res.token); // 存储 Token
       ElMessage.success('登录成功');
-      router.push('/dashboard'); // 跳转到主页
-    // }
+      router.push('/home');
+    }
   } catch (error) {
     ElMessage.error('登录失败，请检查账号密码');
   } finally {
