@@ -79,7 +79,7 @@ public class UserService : IUserService
         var verificationCode = await _context.VerificationCodes
             .Where(v => v.Email == email &&
                         v.Code == code &&
-                        v.ExpireTime > DateTime.Now &&
+                        v.ExpireTime > DateTimeOffset.Now &&
                         !v.IsUsed)
             .OrderBy(v => v.ExpireTime)
             .LastOrDefaultAsync();
@@ -90,7 +90,7 @@ public class UserService : IUserService
             user.Username = email;
             user.PasswordSalt = ToolClass.GenerateSaltValue();
             user.PasswordHash = ToolClass.HashPassword(password, user.PasswordSalt);
-            user.CreatedAt = DateTime.Now;
+            user.CreatedAt = DateTimeOffset.Now;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

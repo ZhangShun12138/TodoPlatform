@@ -29,7 +29,7 @@ public class JwtHelper
             issuer: _jwtSettings.SiteUrl,
             audience: _jwtSettings.SiteUrl,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(_jwtSettings.TokenExpires), // 过期时间
+            expires: DateTimeOffset.Now.Date.AddHours(_jwtSettings.TokenExpires), // 过期时间
             signingCredentials: credentials
         );
 

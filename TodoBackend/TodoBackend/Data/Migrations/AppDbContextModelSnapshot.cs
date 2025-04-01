@@ -31,8 +31,8 @@ namespace TodoBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(5);
 
                     b.Property<string>("Description")
@@ -41,8 +41,8 @@ namespace TodoBackend.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnOrder(3);
 
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset?>("DueDate")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(6);
 
                     b.Property<bool>("IsCompleted")
@@ -81,8 +81,8 @@ namespace TodoBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(5);
 
                     b.Property<byte[]>("PasswordHash")
@@ -131,8 +131,8 @@ namespace TodoBackend.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnOrder(2);
 
-                    b.Property<DateTime>("ExpireTime")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("ExpireTime")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(4);
 
                     b.Property<bool>("IsUsed")

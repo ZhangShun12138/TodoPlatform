@@ -59,7 +59,7 @@ public class TaskController : ControllerBase
         }
         if (task.IsCompleted)
         {
-            task.DueDate = DateTime.Now;
+            task.DueDate = DateTimeOffset.Now;
         }
         _context.Entry(task).State = EntityState.Modified;
         await _context.SaveChangesAsync();

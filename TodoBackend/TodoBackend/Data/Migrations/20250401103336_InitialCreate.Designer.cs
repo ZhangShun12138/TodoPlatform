@@ -12,8 +12,8 @@ using TodoBackend.Data;
 namespace TodoBackend.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250326082316_InitialCreate-20250226")]
-    partial class InitialCreate20250226
+    [Migration("20250401103336_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,8 @@ namespace TodoBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(5);
 
                     b.Property<string>("Description")
@@ -44,8 +44,8 @@ namespace TodoBackend.Data.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasColumnOrder(3);
 
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset?>("DueDate")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(6);
 
                     b.Property<bool>("IsCompleted")
@@ -84,8 +84,8 @@ namespace TodoBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(5);
 
                     b.Property<byte[]>("PasswordHash")
@@ -134,8 +134,8 @@ namespace TodoBackend.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnOrder(2);
 
-                    b.Property<DateTime>("ExpireTime")
-                        .HasColumnType("datetime2")
+                    b.Property<DateTimeOffset>("ExpireTime")
+                        .HasColumnType("datetimeoffset")
                         .HasColumnOrder(4);
 
                     b.Property<bool>("IsUsed")
