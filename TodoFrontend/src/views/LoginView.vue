@@ -48,7 +48,7 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
-import { userlogin } from '../api/loginApi';
+import { userlogin } from '../api/userApi';
 
 // 表单数据
 const form = reactive({
@@ -77,9 +77,14 @@ const loading = ref(false); // 添加 loading 变量
 const handleLogin = async () => {
   loading.value = true;
   try {
-    const res = await userlogin(form.username, form.password);
-    if (res.success) {
-      localStorage.setItem('token', res.token); // 存储 Token
+    const inputdata = {
+      Email: form.username,
+      Password: form.password,
+    };
+    const res = await userlogin(inputdata);
+    const data = res.data;
+    if (data.success) {
+      localStorage.setItem('token', data.token); // 存储 Token
       localStorage.setItem('username', form.username);
       ElMessage.success('登录成功');
       router.push('/home');

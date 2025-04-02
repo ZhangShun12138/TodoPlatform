@@ -64,8 +64,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
 import { User, Lock } from '@element-plus/icons-vue';
-import { sendVerificationCode } from '../api/emailApi';
-import { userRegister } from '../api/registerApi';
+import { sendVerificationCode, userRegister } from '../api/userApi';
 import router from '@/router';
 
 // 表单数据结构
@@ -106,7 +105,10 @@ const sendCode = async () => {
   
   // 模拟API调用（需替换为真实接口）
   try {
-    await sendVerificationCode(form.email)
+    const inpudata = {
+      Email: form.email,
+    }
+    await sendVerificationCode(inpudata)
     startCountdown()
     ElMessage.success('验证码已发送')
   } catch (error) {
@@ -141,16 +143,20 @@ const submitForm = async () => {
   // 模拟API调用（需替换为真实接口）
 
   try {
-    const data = await userRegister(form.email, form.code, form.password);
-    const success = data.success
-    const result = data.result
+    const inputdata = {
+      Email: form.email,
+      Captcha: form.code,
+      Password: form.password,
+    };
+    const res = await userRegister(inputdata);
+    const data = res.data;
     // 3. 检查字段大小写（Result 而非 result）
-    if (success && result == '注册成功') {
-      ElMessage.success(result); // 注意 Result 首字母大写
+    if (data.success && data.result == "注册成功") {
+      ElMessage.success(data.result); // 注意 Result 首字母大写
       router.push('/login')
     } else {
       // 处理业务逻辑错误（如验证码错误）
-      ElMessage.error(result);
+      ElMessage.error(data.result);
     }
   } catch (error) {
     // 4. 精准错误处理
