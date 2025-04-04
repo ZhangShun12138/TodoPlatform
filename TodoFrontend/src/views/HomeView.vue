@@ -40,18 +40,6 @@
 
 <script setup>
 
-// ... existing code ...
-// methods: {
-//   formatDate(dateTimeOffset)
-//   {
-//     if (!dateTimeOffset) return '';
-//     // 将DateTimeOffset转换为本地时间并格式化
-//     const date = new Date(dateTimeOffset);
-//     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-//   }
-// }
-// ... existing code ...
-
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -130,9 +118,17 @@ const deleteTodo = async (id) => {
 };
 
 // 格式化日期
-// 格式化日期
 const formatDate = (dateString) => {
-  return new Date(dateString).toISOString();
+  return new Date(dateString).toLocaleString('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
 };
 
 // 退出登录

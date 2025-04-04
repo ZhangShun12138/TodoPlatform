@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5227', // 添加/api前缀
+  baseURL: 'https://todoback.zshun9966.top:8080', // 添加/api前缀
 //   headers: {
 //     'Authorization': `Bearer ${localStorage.getItem('token')}`
 //   }
